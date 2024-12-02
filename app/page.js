@@ -1,9 +1,16 @@
 'use client'
+import { useState } from "react";
+import React from "react";
 
 import Image from "next/image";
 import styles from "./page.module.scss";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { Pagination } from 'swiper/modules';
 
 export default function Home() {
+  const [selectedOption, setSelectedOption] = useState("B2C");
   return (
     <main className={styles.main}>
       <section className={styles.hero_section}>
@@ -167,6 +174,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+
       <section className={styles.news_section}>
         <div className={styles.title}>
           <h2>
@@ -251,18 +260,231 @@ export default function Home() {
           </div>
         </div>
       </section>
+
       <section className={styles.pricing_section}>
-        <h1 className={styles.title}>
-          Pricing
-        </h1>
+        <h1 className={styles.title}>Pricing</h1>
+
         <div className={styles.select}>
-          <div className={styles.b2c}>
-
+          <div
+            className={`${styles.b2c} ${selectedOption === "B2C" ? styles.active : ""}`}
+            onClick={() => setSelectedOption("B2C")}
+          >
+            B2C
           </div>
-          <div className={styles.b2b}>
-
+          <div
+            className={`${styles.b2b} ${selectedOption === "B2B" ? styles.active : ""}`}
+            onClick={() => setSelectedOption("B2B")}
+          >
+            B2B
           </div>
         </div>
+
+        <div className={styles.content}> 
+          {selectedOption === "B2C" ? (
+            <div className={styles.cards}>
+              <Swiper
+                slidesPerView={1}
+                spaceBetween={10}
+                pagination={{
+                  clickable: true,
+                }}
+                breakpoints={{
+                  480: {
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                  },
+                  768: {
+                    slidesPerView: 2,
+                    spaceBetween: 150,
+                  },
+                  1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 64,
+                  },
+                }}
+                modules={[Pagination]}
+                className="mySwiper"
+              >
+                <SwiperSlide>
+                  <div className={styles.card}>
+                    <h2 className={styles.title}>One-Time Analysis</h2>
+                    <p className={styles.description}>
+                      Quick and reliable diagnostic service!<br /> Get a single health diagnosis for an easy and hassle-free checkup.
+                    </p>
+                    <div className={styles.price}><span className={styles.dollar}>$</span> 0.99</div>
+                    <ul className={styles.features}>
+                      <li className={styles.feature}>
+                      <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect y="0.0195312" width="14" height="14" rx="7" fill="#0ACBAE"/>
+                        <path d="M9.87446 5.13745C10.0418 5.29468 10.0418 5.55002 9.87446 5.70724L6.44627 8.92725C6.27888 9.08448 6.00703 9.08448 5.83964 8.92725L4.12554 7.31725C3.95815 7.16002 3.95815 6.90468 4.12554 6.74746C4.29294 6.59023 4.56478 6.59023 4.73217 6.74746L6.14362 8.07194L9.26917 5.13745C9.43656 4.98022 9.7084 4.98022 9.87579 5.13745H9.87446Z" fill="#3F3F3F" stroke="#3F3F3F" strokeWidth="0.5"/>
+                      </svg>
+                      <label className={styles.labels}>One-time use</label>
+                      </li>
+                      <li className={styles.feature}>
+                      <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect y="0.0195312" width="14" height="14" rx="7" fill="#0ACBAE"/>
+                        <path d="M9.87446 5.13745C10.0418 5.29468 10.0418 5.55002 9.87446 5.70724L6.44627 8.92725C6.27888 9.08448 6.00703 9.08448 5.83964 8.92725L4.12554 7.31725C3.95815 7.16002 3.95815 6.90468 4.12554 6.74746C4.29294 6.59023 4.56478 6.59023 4.73217 6.74746L6.14362 8.07194L9.26917 5.13745C9.43656 4.98022 9.7084 4.98022 9.87579 5.13745H9.87446Z" fill="#3F3F3F" stroke="#3F3F3F" strokeWidth="0.5"/>
+                      </svg>
+                      <label className={styles.labels}>No time-limit</label>
+                      </li>
+                      <li className={styles.feature}>
+                      <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect y="0.0195312" width="14" height="14" rx="7" fill="#0ACBAE"/>
+                        <path d="M9.87446 5.13745C10.0418 5.29468 10.0418 5.55002 9.87446 5.70724L6.44627 8.92725C6.27888 9.08448 6.00703 9.08448 5.83964 8.92725L4.12554 7.31725C3.95815 7.16002 3.95815 6.90468 4.12554 6.74746C4.29294 6.59023 4.56478 6.59023 4.73217 6.74746L6.14362 8.07194L9.26917 5.13745C9.43656 4.98022 9.7084 4.98022 9.87579 5.13745H9.87446Z" fill="#3F3F3F" stroke="#3F3F3F" strokeWidth="0.5"/>
+                      </svg>
+                      <label className={styles.labels}>No registration needed</label>
+                      
+                      </li>
+                    </ul>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={styles.card}>
+                    <h2 className={styles.title}>Essential 10</h2>
+                    <p className={styles.description}>
+                    A convenient package for regular health checks!<br/>Access up to 10 diagnoses in a single plan for ongoing health monitoring.
+                    </p>
+                    <div className={styles.price}><span className={styles.dollar}>$</span> 4.99</div>
+                    <ul className={styles.features}>
+                      <li className={styles.feature}>
+                      <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect y="0.0195312" width="14" height="14" rx="7" fill="#0ACBAE"/>
+                        <path d="M9.87446 5.13745C10.0418 5.29468 10.0418 5.55002 9.87446 5.70724L6.44627 8.92725C6.27888 9.08448 6.00703 9.08448 5.83964 8.92725L4.12554 7.31725C3.95815 7.16002 3.95815 6.90468 4.12554 6.74746C4.29294 6.59023 4.56478 6.59023 4.73217 6.74746L6.14362 8.07194L9.26917 5.13745C9.43656 4.98022 9.7084 4.98022 9.87579 5.13745H9.87446Z" fill="#3F3F3F" stroke="#3F3F3F" strokeWidth="0.5"/>
+                      </svg>
+
+                      <label className={styles.labels}>10 time use</label>
+                      
+                      </li>
+                      <li className={styles.feature}>
+                      <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect y="0.0195312" width="14" height="14" rx="7" fill="#0ACBAE"/>
+                        <path d="M9.87446 5.13745C10.0418 5.29468 10.0418 5.55002 9.87446 5.70724L6.44627 8.92725C6.27888 9.08448 6.00703 9.08448 5.83964 8.92725L4.12554 7.31725C3.95815 7.16002 3.95815 6.90468 4.12554 6.74746C4.29294 6.59023 4.56478 6.59023 4.73217 6.74746L6.14362 8.07194L9.26917 5.13745C9.43656 4.98022 9.7084 4.98022 9.87579 5.13745H9.87446Z" fill="#3F3F3F" stroke="#3F3F3F" strokeWidth="0.5"/>
+                      </svg>
+                      <label className={styles.labels}>Monthly</label>
+                      </li>
+                      <li className={styles.feature}>
+                      <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect y="0.0195312" width="14" height="14" rx="7" fill="#0ACBAE"/>
+                        <path d="M9.87446 5.13745C10.0418 5.29468 10.0418 5.55002 9.87446 5.70724L6.44627 8.92725C6.27888 9.08448 6.00703 9.08448 5.83964 8.92725L4.12554 7.31725C3.95815 7.16002 3.95815 6.90468 4.12554 6.74746C4.29294 6.59023 4.56478 6.59023 4.73217 6.74746L6.14362 8.07194L9.26917 5.13745C9.43656 4.98022 9.7084 4.98022 9.87579 5.13745H9.87446Z" fill="#3F3F3F" stroke="#3F3F3F" strokeWidth="0.5"/>
+                      </svg>
+                      <label className={styles.labels}>Record history</label>
+                      </li>
+                    </ul>
+                    
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={styles.card}>
+                    <h2 className={styles.title}>Flexible 30</h2>
+                    <p className={styles.description}>
+                      Freedom to manage your health anytime!<br/>Enjoy 30 diagnoses with no expiration, including offline access for ultimate convenience.
+                    </p>
+                    <div className={styles.price}><span className={styles.dollar}>$</span> 14.99</div>
+                    <ul className={styles.features}>
+                      <li className={styles.feature}>
+                      <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect y="0.0195312" width="14" height="14" rx="7" fill="#0ACBAE"/>
+                        <path d="M9.87446 5.13745C10.0418 5.29468 10.0418 5.55002 9.87446 5.70724L6.44627 8.92725C6.27888 9.08448 6.00703 9.08448 5.83964 8.92725L4.12554 7.31725C3.95815 7.16002 3.95815 6.90468 4.12554 6.74746C4.29294 6.59023 4.56478 6.59023 4.73217 6.74746L6.14362 8.07194L9.26917 5.13745C9.43656 4.98022 9.7084 4.98022 9.87579 5.13745H9.87446Z" fill="#3F3F3F" stroke="#3F3F3F" strokeWidth="0.5"/>
+                      </svg>
+
+                      <label className={styles.labels}>30 time use</label>
+                      
+                      </li>
+                      <li className={styles.feature}>
+                      <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect y="0.0195312" width="14" height="14" rx="7" fill="#0ACBAE"/>
+                        <path d="M9.87446 5.13745C10.0418 5.29468 10.0418 5.55002 9.87446 5.70724L6.44627 8.92725C6.27888 9.08448 6.00703 9.08448 5.83964 8.92725L4.12554 7.31725C3.95815 7.16002 3.95815 6.90468 4.12554 6.74746C4.29294 6.59023 4.56478 6.59023 4.73217 6.74746L6.14362 8.07194L9.26917 5.13745C9.43656 4.98022 9.7084 4.98022 9.87579 5.13745H9.87446Z" fill="#3F3F3F" stroke="#3F3F3F" strokeWidth="0.5"/>
+                      </svg>
+                      <label className={styles.labels}>Yearly</label>
+                      
+                      </li>
+                      <li className={styles.feature}>
+                      <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect y="0.0195312" width="14" height="14" rx="7" fill="#0ACBAE"/>
+                        <path d="M9.87446 5.13745C10.0418 5.29468 10.0418 5.55002 9.87446 5.70724L6.44627 8.92725C6.27888 9.08448 6.00703 9.08448 5.83964 8.92725L4.12554 7.31725C3.95815 7.16002 3.95815 6.90468 4.12554 6.74746C4.29294 6.59023 4.56478 6.59023 4.73217 6.74746L6.14362 8.07194L9.26917 5.13745C9.43656 4.98022 9.7084 4.98022 9.87579 5.13745H9.87446Z" fill="#3F3F3F" stroke="#3F3F3F" strokeWidth="0.5"/>
+                      </svg>
+                      <label className={styles.labels}>Offline-Access</label>
+                      </li>
+                    </ul>
+                    
+                  </div>
+                </SwiperSlide>
+              </Swiper>
+
+            </div>
+
+            
+          ) : (
+            <div className={styles.cards}>
+              <div className={styles.card}>
+                <h2 className={styles.title}>Business Elite</h2>
+                <p className={styles.description}>
+                  Maximum visibility for your brand!<br />Showcase your business with prominent ads in the news section and get featured in tailored recommendations.
+                </p>
+                <div className={styles.price}><span className={styles.dollar}>$</span> 49.99</div>
+                <ul className={styles.features}>
+                  <li className={styles.feature}>
+                  <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect y="0.0195312" width="14" height="14" rx="7" fill="#0ACBAE"/>
+                    <path d="M9.87446 5.13745C10.0418 5.29468 10.0418 5.55002 9.87446 5.70724L6.44627 8.92725C6.27888 9.08448 6.00703 9.08448 5.83964 8.92725L4.12554 7.31725C3.95815 7.16002 3.95815 6.90468 4.12554 6.74746C4.29294 6.59023 4.56478 6.59023 4.73217 6.74746L6.14362 8.07194L9.26917 5.13745C9.43656 4.98022 9.7084 4.98022 9.87579 5.13745H9.87446Z" fill="#3F3F3F" stroke="#3F3F3F" strokeWidth="0.5"/>
+                  </svg>
+
+                  <label className={styles.labels}>Bigger ad space </label>
+                  </li>
+                  <li className={styles.feature}>
+                  <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect y="0.0195312" width="14" height="14" rx="7" fill="#0ACBAE"/>
+                    <path d="M9.87446 5.13745C10.0418 5.29468 10.0418 5.55002 9.87446 5.70724L6.44627 8.92725C6.27888 9.08448 6.00703 9.08448 5.83964 8.92725L4.12554 7.31725C3.95815 7.16002 3.95815 6.90468 4.12554 6.74746C4.29294 6.59023 4.56478 6.59023 4.73217 6.74746L6.14362 8.07194L9.26917 5.13745C9.43656 4.98022 9.7084 4.98022 9.87579 5.13745H9.87446Z" fill="#3F3F3F" stroke="#3F3F3F" strokeWidth="0.5"/>
+                  </svg>
+                  <label className={styles.labels}>Place ads on results page</label>
+                  </li>
+                  <li className={styles.feature}>
+                  <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect y="0.0195312" width="14" height="14" rx="7" fill="#0ACBAE"/>
+                    <path d="M9.87446 5.13745C10.0418 5.29468 10.0418 5.55002 9.87446 5.70724L6.44627 8.92725C6.27888 9.08448 6.00703 9.08448 5.83964 8.92725L4.12554 7.31725C3.95815 7.16002 3.95815 6.90468 4.12554 6.74746C4.29294 6.59023 4.56478 6.59023 4.73217 6.74746L6.14362 8.07194L9.26917 5.13745C9.43656 4.98022 9.7084 4.98022 9.87579 5.13745H9.87446Z" fill="#3F3F3F" stroke="#3F3F3F" strokeWidth="0.5"/>
+                  </svg>
+                  <label className={styles.labels}>Recommend your doctors</label>
+                  </li>
+                </ul>
+              </div>
+
+              <div className={styles.card}>
+                <h2 className={styles.title}>Business Classic</h2>
+                <p className={styles.description}>
+                Simple yet impactful advertising solution!<br/>Advertise your business effectively in the news and information section to reach your audience.
+                </p>
+                <div className={styles.price}><span className={styles.dollar}>$</span> 24.99</div>
+                <ul className={styles.features}>
+                  <li className={styles.feature}>
+                  <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect y="0.0195312" width="14" height="14" rx="7" fill="#0ACBAE"/>
+                    <path d="M9.87446 5.13745C10.0418 5.29468 10.0418 5.55002 9.87446 5.70724L6.44627 8.92725C6.27888 9.08448 6.00703 9.08448 5.83964 8.92725L4.12554 7.31725C3.95815 7.16002 3.95815 6.90468 4.12554 6.74746C4.29294 6.59023 4.56478 6.59023 4.73217 6.74746L6.14362 8.07194L9.26917 5.13745C9.43656 4.98022 9.7084 4.98022 9.87579 5.13745H9.87446Z" fill="#3F3F3F" stroke="#3F3F3F" strokeWidth="0.5"/>
+                  </svg>
+
+                  <label className={styles.labels}>News page ad space </label>
+                  </li>
+                  <li className={styles.feature}>
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="14" height="14" rx="7" fill="#F66161"/>
+                    <path d="M8.48721 5.46888C8.59184 5.34746 8.57517 5.16711 8.44924 5.06623C8.32332 4.96534 8.13628 4.98141 8.03165 5.10283L6.77795 6.55361L5.52424 5.10283C5.41961 4.98141 5.23258 4.96534 5.10665 5.06623C4.98072 5.16711 4.96406 5.34746 5.06869 5.46888L6.39184 7L5.06869 8.53113C4.96406 8.65254 4.98072 8.83289 5.10665 8.93377C5.23258 9.03466 5.41961 9.01859 5.52424 8.89717L6.77795 7.44639L8.03165 8.89717C8.13628 9.01859 8.32332 9.03466 8.44924 8.93377C8.57517 8.83289 8.59184 8.65254 8.48721 8.53113L7.16406 7L8.48721 5.46888Z" fill="black" stroke="black"/>
+                  </svg>
+                    <label className={styles.labels}>No ads on result page</label>
+                  </li>
+                  <li className={styles.feature}>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect width="14" height="14" rx="7" fill="#F66161"/>
+                      <path d="M8.48721 5.46888C8.59184 5.34746 8.57517 5.16711 8.44924 5.06623C8.32332 4.96534 8.13628 4.98141 8.03165 5.10283L6.77795 6.55361L5.52424 5.10283C5.41961 4.98141 5.23258 4.96534 5.10665 5.06623C4.98072 5.16711 4.96406 5.34746 5.06869 5.46888L6.39184 7L5.06869 8.53113C4.96406 8.65254 4.98072 8.83289 5.10665 8.93377C5.23258 9.03466 5.41961 9.01859 5.52424 8.89717L6.77795 7.44639L8.03165 8.89717C8.13628 9.01859 8.32332 9.03466 8.44924 8.93377C8.57517 8.83289 8.59184 8.65254 8.48721 8.53113L7.16406 7L8.48721 5.46888Z" fill="black" stroke="black"/>
+                    </svg>
+
+                    <label className={styles.labels}>No recommendations</label>
+                  </li>
+                </ul>
+              </div>
+
+              
+            </div>
+          )}
+        </div>    
       </section>
     </main>
   );

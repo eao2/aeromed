@@ -154,7 +154,7 @@
   .news_section{
     max-width: 60rem;
     margin: auto;
-    @media (max-width: 960px) {
+    @media (max-width: 1008px) {
       margin: 0 1.5rem;
     }
     .title{
@@ -258,10 +258,185 @@
       }
     }
   }
-  .pricing_section{
-    .title{
-      font-size: 1.5rem;
-      color: #101623;
+  .pricing_section {
+    max-width: 65rem;
+    margin: auto;
+    text-align: center;
+    padding: 4rem 2rem;
+  
+    .title {
+      font-family: 'Inter', sans-serif;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      color: #3F3F3F;
     }
+  
+    .select {
+      display: flex;
+      justify-content: center;
+      margin: auto auto 2rem auto ;
+      background-color: rgba(255, 255, 255, 0.5);
+      border: 2px solid rgba(255, 255, 255, 0.32); /* 32% transparent white border */
+      border-radius: 50px;
+      width: fit-content;
+
+  
+      .b2c,
+      .b2b {
+        font-family: 'Rubik', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 0.6rem 2rem;
+        margin: 0.2rem;
+        font-size: 1rem;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: #3F3F3F;
+        
+        &.active {
+          background-color: #3acbae;
+          color: #fff;
+        }
+  
+        /*&:hover {
+          background-color: #67d1f9;
+          color: #fff;
+        }*/
+      }
+    }
+  
+    .content {
+      font-size: 1.2rem;
+      color: #3F3F3F;
+      padding: 1rem;
+      border-top: 1px solid #ddd;
+      margin-top: 1rem;
+    }
+    .cards {
+      justify-content: center;
+      display: flex;
+      gap: 1.8rem;
+
+      // .container {
+      //   display: grid;
+      //   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); // Adjust for laptops and desktops
+      //   gap: 20px;
+      
+      //   @media (max-width: 768px) {
+      //     grid-template-columns: 1fr; // Single column layout for mobile
+      //     gap: 15px; // Reduce spacing for smaller screens
+      //   }
+      // }
+      
+      // .card {
+      //   background: #fff;
+      //   border-radius: 8px;
+      //   padding: 10px;
+      //   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      //   transition: all 0.3s ease;
+      
+      //   &:hover {
+      //     transform: scale(1.02); // Hover effect for interactive feel
+      //   }
+      
+      //   img {
+      //     width: 100%;
+      //     height: auto;
+      //     border-radius: 8px;
+      //   }
+      
+      //   .card-content {
+      //     margin-top: 10px;
+      
+      //     .category {
+      //       color: #00a676;
+      //       font-weight: bold;
+      //       font-size: 12px;
+      //     }
+      
+      //     .title {
+      //       font-size: 16px;
+      //       font-weight: bold;
+      //       margin: 5px 0;
+      //     }
+      
+      //     .date {
+      //       color: #888;
+      //       font-size: 12px;
+      //     }
+      //   }
+      // }
+      
+
+      .card {
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 12px; // Rounded corners
+        padding: 25px; // Padding around content
+        width: 333px; // Fixed width for the card
+        text-align: center; // Center-align text
+        // display: flex;
+        flex-direction: column;
+        align-items: center;
+        display: grid;
+      
+        .title {
+          font-size: 29px ; // Title font size
+          font-weight: 600; // Bold title
+          font-family: 'Rubik', sans-serif;
+          color: #0ACBAE; // Teal color for the title
+          margin-bottom: 10px; // Space below the title
+        }
+      
+        .description {
+          font-size: 13px; // Smaller description text
+          font-weight: 300;
+          font-family: 'Rubik', sans-serif;
+          color: #3F3F3F; // Slightly darker gray for the description
+          margin-bottom: 20px; // Space below the description
+        }
+      
+        .price {
+          font-size: 48px; // Large font for the price
+          font-weight: 600; 
+          font-family: 'Rubik', sans-serif;
+          color: #3F3F3F; // Teal color for the price
+          margin-bottom: 15px; // Space below the price
+          .dollar {
+            color: #0ACBAE;
+            font-size: 24px; // Large font for the price
+            font-weight: 300; 
+            font-family: 'Rubik', sans-serif;
+            
+          }
+        }
+      
+        .features {
+          list-style: none; // Remove default list styling
+          padding: 0; // Remove padding from the list
+          margin-top: 20px; // Space above the feature list
+      
+          .feature {
+            
+            display: flex; // Use flexbox for alignment
+            align-items: center; // Vertically align items
+            margin-bottom: 12px; // Space between each feature
+            color: #3F3F3F; // Dark gray color for text
+            font-size: 1rem; // Default font size for features
+            .labels {
+              font-size: 14px; // Smaller description text
+              font-weight: 300;
+              font-family: 'Rubik', sans-serif;
+              margin-left: 0.5rem;
+            }
+          }
+        }
+      }
+      
+    }
+    
   }
+  
+  
 }
