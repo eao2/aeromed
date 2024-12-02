@@ -1,6 +1,7 @@
 import { Rubik } from 'next/font/google';
 // import localFont from "next/font/local";
 import Navbar from '../componenets/Navbar'
+import Lenis from '../componenets/LenisSmoothScroll'
 import "./globals.css";
 
 const rubik = Rubik({
@@ -35,8 +36,10 @@ export default function RootLayout({ children }) {
         <meta name="theme-color" content="#7EDFD3"/>
       </head>
       <body className={rubik.className}>
-        <Navbar/>
-        {children}
+        <Lenis>
+          <Navbar/>
+          {children}
+        </Lenis>
       </body>
     </html>
   );
