@@ -58,12 +58,14 @@
             }
         }
         .links{
+            display: flex;
+            gap: 1.5rem;
             @media (max-width: 768px) {
                 display: none;
             }
             a{
-                color: #0ACBAE;
-                font-weight: 700;
+                color: #2c2c2c;
+                font-weight: 400;
                 font-size: 1rem;
             }
         }

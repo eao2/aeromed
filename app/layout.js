@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <meta name="theme-color" content="#7EDFD3"/>
+        <meta name="theme-color" content="#FFFFFF"/>
       </head>
       <body className={rubik.className}>
         <Lenis>

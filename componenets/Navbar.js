@@ -71,7 +71,10 @@ export default function Navbar() {
                                 </Link>
                                 <div className={styles.vbar}></div>
                                 <div className={styles.links}>
-                                    <a href='/'>Танилцуулга</a>
+                                    <a href='/' style={{color: pathname == '/' ? "#3ACBAE" : "#2C2C2C"}}>Танилцуулга</a>
+                                    <a href='/recorder' style={{color: pathname == '/recorder' ? "#3ACBAE" : "#2C2C2C"}}>Оношлуулах</a>
+                                    <a href='/pricing' style={{color: pathname == '/pricing' ? "#3ACBAE" : "#2C2C2C"}}>Төлбөр</a>
+                                    <a href='/contact' style={{color: pathname == '/contact' ? "#3ACBAE" : "#2C2C2C"}}>Холбогдох</a>
                                 </div>
                             </div>
                             <div className={styles.rt}>

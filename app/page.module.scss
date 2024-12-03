@@ -3,27 +3,39 @@
   position: relative;
   .bg1{
     position: absolute;
-    left: 10vw;
-    top: 90vh;
-    filter: blur(40rem);
+    left: 5vw;
+    top: 70vh;
+    filter: blur(20rem);
+    svg{
+      width: 50vw;
+    }
   }
   .bg2{
     position: absolute;
     right: 10rem;
     top: 150vh;
-    filter: blur(30rem);
+    filter: blur(20rem);
+    svg{
+      width: 50vw;
+    }
   }
   .bg3{
     position: absolute;
-    left: 10vw;
+    left: 5vw;
     top: 200vh;
-    filter: blur(45rem);
+    filter: blur(25rem);
+    svg{
+      width: 50vw;
+    }
   }
   .bg4{
     position: absolute;
-    left: 20vw;
-    top: 300vh;
-    filter: blur(45rem);
+    right: 10vw;
+    top: 260vh;
+    filter: blur(25rem);
+    svg{
+      width: 50vw;
+    }
   }
 }
 
@@ -520,7 +532,7 @@
         @media (max-width: 960px) {
           // position: initial;
           right: initial;
-          bottom: 2rem;
+          bottom: 4rem;
         }
         .qr{
           width: 12rem;

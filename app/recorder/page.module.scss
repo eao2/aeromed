@@ -1,0 +1,120 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background-color: #F8FFFE;
+    border-radius: 1rem;
+    max-width: 60rem;
+    margin: auto;
+    text-align: center;
+    margin-top: 9rem;
+    overflow: hidden;
+    @media (max-width: 1008px) {
+      margin-left: 1.5rem;
+      margin-right: 1.5rem;
+    }
+  }
+  
+  .canvas {
+    margin-top: 1rem;
+  }
+  
+  .btns{
+    display: flex;
+    gap: 1rem;
+    .recordButton{
+        cursor: pointer;
+        background-color: #3ACBAE;
+        color: #fff;
+        padding: 14px 20px;
+        border-radius: 2rem;
+        font-size: 1rem;
+        transition: 300ms;
+        width: auto;
+        height: 3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+    }
+    .rerecordButton{
+        cursor: pointer;
+        background-color: transparent;
+        color: #3f3f3f;
+        padding: 14px 20px;
+        border-radius: 2rem;
+        font-size: 1rem;
+        transition: 300ms;
+        width: auto;
+        height: 3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid #3f3f3f;
+        svg{
+            width: 22px;
+            height: auto;
+            fill: #3f3f3f;
+        }
+    }
+    .stopButton{
+        cursor: pointer;
+        background-color: #EA4335;
+        color: #fff;
+        border-radius: 2rem;
+        font-size: 1rem;
+        transition: 300ms;
+        width: 3rem;
+        height: 3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        svg{
+            width: 22px;
+            height: auto;
+        }
+    }
+    .submitButton {
+        cursor: pointer;
+        background-color: #3ACBAE;
+        padding: 14px 20px;
+        color: #fff;
+        border-radius: 2rem;
+        font-size: 1rem;
+        transition: 300ms;
+        width: auto;
+        height: 3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .recordButton:disabled,
+    .stopButton:disabled,
+    .submitButton:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+    
+    .playbackSection {
+        .playButton{
+            width: 3rem;
+            height: 3rem;
+            border-radius: 2rem;
+            background-color: #3ACBAE;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            svg{
+                fill: #FFF;
+                width: 1.5rem;
+                height: auto;
+            }
+        }
+    }
+}
+  

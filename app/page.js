@@ -8,6 +8,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Pagination } from 'swiper/modules';
+import Footer from "@/componenets/Footer";
 
 export default function Home() {
   const [selectedOption, setSelectedOption] = useState("B2C");
@@ -501,6 +502,7 @@ export default function Home() {
             </div>
           </div>
         </section>
+        <Footer/>
       </div>
     </main>
   );
