@@ -7,16 +7,17 @@ import styles from './page.module.scss';
 
 export default function AudioRecorder() {
   const [isRecording, setIsRecording] = useState(false);
-  const [audioUrl, setAudioUrl] = useState(null);  
+  const [audioUrl, setAudioUrl] = useState(null);
   const continuousCanvasRef = useRef(null);
   const audioStreamRef = useRef(null);
   const mediaRecorderRef = useRef(null);
-  const audioChunksRef = useRef([]);  
+  const audioChunksRef = useRef([]);
   const audioRef = useRef(null);
+  const [result, setResult] = useState(null);
 
   const visualizerOptions = {
-    lineWidth: "thin",  
-    strokeColor: '#3ACBAE',  
+    lineWidth: "thin",
+    strokeColor: '#3ACBAE',
     slices: 120,  
     barRadius: 1,  
     lineWidth: "thin",
@@ -83,24 +84,48 @@ export default function AudioRecorder() {
   }
 
   function submitRecording() {
-    if (!audioUrl) return;
-
-    const formData = new FormData();
-    const file = new File([audioUrl], "recording.wav", { type: "audio/wav" });
-    formData.append("file", file);
-
-    fetch('/upload', {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => console.log('File uploaded successfully', data))
-      .catch((error) => console.error('Error uploading file:', error));
+    if (!audioUrl) {
+      console.error('No audio URL available');
+      return;
+    }
+  
+    fetch(audioUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.blob();
+      })
+      .then(blob => {
+        const formData = new FormData();
+        const file = new File([blob], "recording.wav", { type: "audio/wav" });
+        formData.append("file", file);
+  
+        return fetch('/api/upload', {
+          method: 'POST',
+          body: formData
+        });
+      })
+      .then(response => {
+        if (response.ok) {
+          return response.text();
+        } else {
+          throw new Error('Upload failed');
+        }
+      })
+      .then(message => {
+        console.log(message);
+        alert(message)
+        // alert('File uploaded successfully');
+      })
+      .catch(error => {
+        console.error('Error uploading file:', error);
+        alert('File upload failed');
+      });
   }
-
-    const togglePlay = () => {
-        audioRef.current.play();
-    };
+  const togglePlay = () => {
+      audioRef.current.play();
+  };
 
   return (
     <section className={styles.section}>
