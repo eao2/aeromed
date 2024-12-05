@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
 import { continuousVisualizer } from "sound-visualizer";
-import { useState, useRef, useEffect } from "react";
-import 'wave-audio-path-player'
+import { useState, useRef } from "react";
+import 'wave-audio-path-player';
 import styles from './page.module.scss';  
 
 export default function AudioRecorder() {
@@ -12,31 +12,30 @@ export default function AudioRecorder() {
   const audioStreamRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
-  const audioRef = useRef(null);
-  const [result, setResult] = useState(null);
+  const audioRef = useRef(null);;
+  const [percent, setPercent] = useState(null);
 
   const visualizerOptions = {
     lineWidth: "thin",
     strokeColor: '#3ACBAE',
     slices: 120,  
     barRadius: 1,  
-    lineWidth: "thin",
     canvasWidth: 960,
   };
 
   async function startRecording() {
+    setPercent(null)
     if (isRecording) return;
 
     try {
-      
-      const audioStream = await navigator.mediaDevices.getUserMedia({
-        audio: true,
-      });
+      const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
       audioStreamRef.current = audioStream;
       setIsRecording(true);
-      audioChunksRef.current = [];  
+      audioChunksRef.current = [];
       
-      const mediaRecorder = new MediaRecorder(audioStream);
+      const mediaRecorder = new MediaRecorder(audioStream, { 
+        mimeType: 'audio/webm' 
+      });
       mediaRecorderRef.current = mediaRecorder;
 
       mediaRecorder.ondataavailable = (event) => {
@@ -44,30 +43,29 @@ export default function AudioRecorder() {
       };
 
       mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
         const audioUrl = URL.createObjectURL(audioBlob);
-        setAudioUrl(audioUrl);  
-        audioChunksRef.current = [];  
+        setAudioUrl(audioUrl);
+        audioChunksRef.current = [];
       };
 
       mediaRecorder.start();
-      
+
       if (continuousCanvasRef.current) {
         const visualizer = continuousVisualizer(audioStream, continuousCanvasRef.current, visualizerOptions);
 
-        if (visualizer && typeof visualizer.start === "function" && typeof visualizer.stop === "function") {
-          visualizer.start();  
+        if (visualizer?.start && visualizer?.stop) {
+          visualizer.start();
 
           const stopHandler = () => {
-            mediaRecorder.stop();  
-            audioStream.getTracks().forEach((track) => track.stop());  
-            setIsRecording(false);
-            visualizer.stop();  
+            stopRecording();
+            visualizer.stop();
+            window.removeEventListener("click", stopHandler);
           };
 
-          window.addEventListener("click", stopHandler);  
+          window.addEventListener("click", stopHandler);
         } else {
-          console.error("Visualizer is not initialized correctly.");
+          console.error("Visualizer initialization failed.");
         }
       }
     } catch (err) {
@@ -78,9 +76,98 @@ export default function AudioRecorder() {
   function stopRecording() {
     if (!isRecording) return;
 
-    mediaRecorderRef.current.stop();
-    audioStreamRef.current.getTracks().forEach((track) => track.stop());
+    mediaRecorderRef.current?.stop();
+    audioStreamRef.current?.getTracks().forEach((track) => track.stop());
     setIsRecording(false);
+  }
+
+  function convertWebmToWav(webmBlob) {
+    return new Promise((resolve, reject) => {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const fileReader = new FileReader();
+
+      fileReader.onload = (event) => {
+        const arrayBuffer = event.target.result;
+        
+        audioContext.decodeAudioData(arrayBuffer, (audioBuffer) => {
+          const offlineContext = new OfflineAudioContext(
+            audioBuffer.numberOfChannels,
+            audioBuffer.length,
+            audioBuffer.sampleRate
+          );
+
+          const source = offlineContext.createBufferSource();
+          source.buffer = audioBuffer;
+
+          const destination = offlineContext.destination;
+          source.connect(destination);
+          source.start();
+
+          offlineContext.startRendering().then((renderedBuffer) => {
+            const wavBlob = bufferToWave(renderedBuffer, renderedBuffer.length);
+            resolve(wavBlob);
+          }).catch(reject);
+        }, reject);
+      };
+
+      fileReader.readAsArrayBuffer(webmBlob);
+    });
+  }
+
+  // Utility function to convert AudioBuffer to WAV Blob
+  function bufferToWave(abuffer, len) {
+    const numOfChan = abuffer.numberOfChannels;
+    const length = len * numOfChan * 2 + 44;
+    const buffer = new ArrayBuffer(length);
+    const view = new DataView(buffer);
+    const channels = [];
+    let sample;
+    let offset = 0;
+    let pos = 0;
+
+    // Write WAV header
+    setUint32(0x46464952);                         // "RIFF"
+    setUint32(length - 8);                         // file length - 8
+    setUint32(0x45564157);                         // "WAVE"
+
+    setUint32(0x20746d66);                         // "fmt " chunk
+    setUint32(16);                                 // length = 16
+    setUint16(1);                                  // PCM (uncompressed)
+    setUint16(numOfChan);
+    setUint32(abuffer.sampleRate);
+    setUint32(abuffer.sampleRate * 2 * numOfChan); // avg. bytes/sec
+    setUint16(numOfChan * 2);                      // block-align
+    setUint16(16);                                 // 16-bit (hardcoded)
+
+    setUint32(0x61746164);                         // "data" - chunk
+    setUint32(length - pos - 4);                   // chunk length
+
+    // Write interleaved data
+    for(let i = 0; i < abuffer.numberOfChannels; i++)
+      channels.push(abuffer.getChannelData(i));
+
+    while(pos < length) {
+      for(let i = 0; i < numOfChan; i++) {             // interleave channels
+        sample = Math.max(-1, Math.min(1, channels[i][offset])); // clamp
+        sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767)|0; // scale to 16-bit signed int
+        view.setInt16(pos, sample, true);          // update data chunk
+        pos += 2;
+      }
+      offset++ // next source sample
+    }
+
+    // Return the WAV Blob
+    return new Blob([buffer], { type: "audio/wav" });
+
+    // Helper to write big-endian values
+    function setUint16(data) {
+      view.setUint16(pos, data, true);
+      pos += 2;
+    }
+    function setUint32(data) {
+      view.setUint32(pos, data, true);
+      pos += 4;
+    }
   }
 
   function submitRecording() {
@@ -96,39 +183,62 @@ export default function AudioRecorder() {
         }
         return response.blob();
       })
-      .then(blob => {
+      .then(blob => convertWebmToWav(blob))
+      .then(wavBlob => {
         const formData = new FormData();
-        const file = new File([blob], "recording.wav", { type: "audio/wav" });
-        formData.append("file", file);
-  
+        const file = new File([wavBlob], "recording.wav", { type: "audio/wav" });
+        formData.append("fileToUpload", file);
+        // return fetch('http://192.168.50.41:5000/upload', {
         return fetch('/api/upload', {
           method: 'POST',
           body: formData
         });
       })
       .then(response => {
-        if (response.ok) {
-          return response.text();
-        } else {
+        if (!response.ok) {
           throw new Error('Upload failed');
         }
+        return response.text();
       })
       .then(message => {
         console.log(message);
-        alert(message)
-        // alert('File uploaded successfully');
+        // alert(message);
+        console.log(message)
+        setPercent((parseFloat(message.split(" ")[1])*100).toFixed(2));
       })
       .catch(error => {
         console.error('Error uploading file:', error);
         alert('File upload failed');
       });
   }
+
   const togglePlay = () => {
+    if (audioRef.current) {
       audioRef.current.play();
+    }
   };
 
   return (
     <section className={styles.section}>
+      {percent?(
+        <section className={styles.container} style={{backgroundColor: percent<50? "#F8FFFE":"#FFF8F8"}}>
+          <div className={styles.wrap}>
+            <div className={styles.txt}>
+            {percent<50? (<span style={{color: "#3ACBAE"}}>ХАТГАЛГААГҮЙ/NON-PNEUMONIA</span>):(<span style={{color: "#EA4335"}}>ХАТГАЛГААТАЙ/PNEUMONIA</span>)}
+            </div>
+            <div className={styles.percent}>
+              Та хатгалгаатай байх магадлал {percent}% байна.
+            </div>
+          </div>
+          <div className={styles.btns}>
+            <button className={styles.rerecordButton} onClick={startRecording}>
+                Дахиж бичих
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/>
+                </svg>
+            </button>
+          </div>
+        </section>
+      ):(
       <section className={styles.container}>
         <canvas ref={continuousCanvasRef} width={960} height={160} className={styles.canvas}></canvas>
 
@@ -165,7 +275,7 @@ export default function AudioRecorder() {
 
             {audioUrl && !isRecording && (
             <div className={styles.playbackSection}>
-                <audio ref={audioRef} src={audioUrl} type="audio/wav" />
+                <audio ref={audioRef} src={audioUrl} type="audio/webm" />
                 <button
                 className={styles.playButton} 
                 onClick={togglePlay}
@@ -185,6 +295,7 @@ export default function AudioRecorder() {
             </button>)}
         </div>
       </section>
+      )}
     </section>
   );
 }
