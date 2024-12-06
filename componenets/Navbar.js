@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react'
 import styles from './Navbar.module.scss'
-import { useRouter, useSearchParams, usePathname } from 'next/navigation'
+import { useRouter, useSearchParams, usePathname} from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 
 
 export default function Navbar() {
+    // const [fullPath, setFullPath] = useState('');
     const pathname = usePathname();
 
     const [showMenu, setShowMenu] = useState(false)
@@ -30,6 +31,7 @@ export default function Navbar() {
     useEffect(() => {
         setShowMenu(false);
         setShowProfile(false);
+        console.log(pathname)
     }, [pathname]);
 
     return (
@@ -73,8 +75,8 @@ export default function Navbar() {
                                 <div className={styles.links}>
                                     <a href='/' style={{color: pathname == '/' ? "#3ACBAE" : "#2C2C2C"}}>Танилцуулга</a>
                                     <a href='/recorder' style={{color: pathname == '/recorder' ? "#3ACBAE" : "#2C2C2C"}}>Оношлуулах</a>
-                                    <a href='/pricing' style={{color: pathname == '/pricing' ? "#3ACBAE" : "#2C2C2C"}}>Төлбөр</a>
-                                    <a href='/contact' style={{color: pathname == '/contact' ? "#3ACBAE" : "#2C2C2C"}}>Холбогдох</a>
+                                    <a href='/#pricing' style={{color: pathname == '/#pricing' ? "#3ACBAE" : "#2C2C2C"}}>Төлбөр</a>
+                                    <a href='/#contact' style={{color: pathname == '/#contact' ? "#3ACBAE" : "#2C2C2C"}}>Холбогдох</a>
                                 </div>
                             </div>
                             <div className={styles.rt}>

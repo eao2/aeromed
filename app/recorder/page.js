@@ -1,8 +1,7 @@
 'use client';
 
 import { continuousVisualizer } from "sound-visualizer";
-import { useState, useRef } from "react";
-import 'wave-audio-path-player';
+import { useState, useRef, useEffect } from "react";
 import styles from './page.module.scss';  
 
 export default function AudioRecorder() {
@@ -12,8 +11,10 @@ export default function AudioRecorder() {
   const audioStreamRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
-  const audioRef = useRef(null);;
+  const audioRef = useRef(null);
   const [percent, setPercent] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const fileInputRef = useRef(null);
 
   const visualizerOptions = {
     lineWidth: "thin",
@@ -22,6 +23,13 @@ export default function AudioRecorder() {
     barRadius: 1,  
     canvasWidth: 960,
   };
+
+  useEffect(() => {
+    // Ensure this only runs on the client side
+    if (typeof window !== 'undefined') {
+      // Remove the import of wave-audio-path-player to avoid SSR issues
+    }
+  }, []);
 
   async function startRecording() {
     setPercent(null)
@@ -72,6 +80,17 @@ export default function AudioRecorder() {
       console.error("Failed to access microphone:", err);
     }
   }
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const handleButtonClick = () => {
+    fileInputRef.current.click(); // Triggers the file input
+  };
 
   function stopRecording() {
     if (!isRecording) return;
@@ -126,6 +145,15 @@ export default function AudioRecorder() {
     let pos = 0;
 
     // Write WAV header
+    function setUint16(data) {
+      view.setUint16(pos, data, true);
+      pos += 2;
+    }
+    function setUint32(data) {
+      view.setUint32(pos, data, true);
+      pos += 4;
+    }
+
     setUint32(0x46464952);                         // "RIFF"
     setUint32(length - 8);                         // file length - 8
     setUint32(0x45564157);                         // "WAVE"
@@ -158,17 +186,42 @@ export default function AudioRecorder() {
 
     // Return the WAV Blob
     return new Blob([buffer], { type: "audio/wav" });
-
-    // Helper to write big-endian values
-    function setUint16(data) {
-      view.setUint16(pos, data, true);
-      pos += 2;
-    }
-    function setUint32(data) {
-      view.setUint32(pos, data, true);
-      pos += 4;
-    }
   }
+
+  const restartRecording = () =>{
+    setAudioUrl(null)
+    setPercent(null)
+    setSelectedFile(null)
+  }
+
+  const handleFileUpload = () => {
+    if (!selectedFile) {
+      alert('Please select a file before uploading.');
+      return;
+    }
+    
+    const formData = new FormData();
+    formData.append('fileToUpload', selectedFile);
+
+    return fetch('https://student.nmit.edu.mn/upload', {
+      method: 'POST',
+      body: formData,
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Upload failed');
+      }
+      return response.text();
+    })
+    .then(message => {
+      console.log(message);
+      setPercent((parseFloat(message.split(" ")[1])*100).toFixed(2));
+    })
+    .catch(error => {
+      console.error('Error uploading file:', error);
+      alert('File upload failed');
+    });
+  };
 
   function submitRecording() {
     if (!audioUrl) {
@@ -188,8 +241,7 @@ export default function AudioRecorder() {
         const formData = new FormData();
         const file = new File([wavBlob], "recording.wav", { type: "audio/wav" });
         formData.append("fileToUpload", file);
-        // return fetch('http://192.168.50.41:5000/upload', {
-        return fetch('/api/upload', {
+        return fetch('https://student.nmit.edu.mn/upload', {
           method: 'POST',
           body: formData
         });
@@ -202,8 +254,6 @@ export default function AudioRecorder() {
       })
       .then(message => {
         console.log(message);
-        // alert(message);
-        console.log(message)
         setPercent((parseFloat(message.split(" ")[1])*100).toFixed(2));
       })
       .catch(error => {
@@ -231,8 +281,8 @@ export default function AudioRecorder() {
             </div>
           </div>
           <div className={styles.btns}>
-            <button className={styles.rerecordButton} onClick={startRecording}>
-                Дахиж бичих
+            <button className={styles.rerecordButton} onClick={restartRecording}>
+                Дахиж үзэх
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/>
                 </svg>
             </button>
@@ -245,11 +295,12 @@ export default function AudioRecorder() {
         <div className={styles.btns}>
             {!isRecording ? (
                 audioUrl ? (
-                <button className={styles.rerecordButton} onClick={startRecording}>
-                    Дахиж бичих
+                <button className={styles.rerecordButton} onClick={restartRecording}>
+                    Дахиж үзэх
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/>
                     </svg>
                 </button>):(
+                  <>
                 <button className={styles.recordButton} onClick={startRecording}>
                     Бичиж эхлэх
                     <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -264,15 +315,40 @@ export default function AudioRecorder() {
                         </defs>
                     </svg>
                 </button>
+                  <button className={styles.uploadButton} onClick={handleButtonClick}>
+                    Файл байршуулах
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-cloud-plus-fill" viewBox="0 0 16 16">
+                      <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m.5 4v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0"/>
+                    </svg>
+                  </button>
+                  
+                  <input 
+                    type="file"
+                    name="fileToUpload"
+                    ref={fileInputRef} 
+                    style={{ display: 'none' }} 
+                    hidden
+                    onChange={handleFileChange} 
+                  />
+                  
+                  {selectedFile && (
+                    <>
+                    <div className={styles.btns}>
+                      <button className={styles.uploadButton} onClick={handleFileUpload}>
+                        Файл илгээх {selectedFile.name}
+                      </button>
+                    </div>
+                    </>
+                  )}
+                </>
                 )
             ) : (
             <button className={styles.stopButton} onClick={stopRecording}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-stop-circle-fill" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-stop-circle-fill" viewBox="0 0 16 16">
                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M6.5 5A1.5 1.5 0 0 0 5 6.5v3A1.5 1.5 0 0 0 6.5 11h3A1.5 1.5 0 0 0 11 9.5v-3A1.5 1.5 0 0 0 9.5 5z"/>
                 </svg>
             </button>
             )}
-
             {audioUrl && !isRecording && (
             <div className={styles.playbackSection}>
                 <audio ref={audioRef} src={audioUrl} type="audio/webm" />

@@ -1,4 +1,5 @@
 import { Rubik } from 'next/font/google';
+import { Analytics } from "@vercel/analytics/react"
 // import localFont from "next/font/local";
 import Navbar from '../componenets/Navbar'
 import Lenis from '../componenets/LenisSmoothScroll'
@@ -40,6 +41,7 @@ export default function RootLayout({ children }) {
           <Navbar/>
           {children}
         </Lenis>
+        <Analytics/>
       </body>
     </html>
   );

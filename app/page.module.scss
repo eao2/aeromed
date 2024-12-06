@@ -310,11 +310,11 @@
     }
   }
   .pricing_section {
-    max-width: 65rem;
+    max-width: 45rem;
     margin: auto;
     text-align: center;
     padding: 2rem 0;
-    @media (max-width: 1088px) {
+    @media (max-width: calc(45rem + 3rem)) {
       margin: 0 1.5rem;
     }
   
@@ -362,7 +362,7 @@
     }
   
     // .content {
-    //   border-top: 1px solid #ddd;
+    //   border: 1px solid #ddd;
     // }
     .cards {
       justify-content: center;
@@ -418,11 +418,15 @@
           color: #3F3F3F;
           margin-bottom: 1rem;
           line-height: 3rem;
-
+          .year{
+            font-size: 14px;
+            height: 16px;
+            padding-top: 12px;
+          }
           &::before {
             line-height: 2rem;
             display: flex;
-            content: "$";
+            content: "₮";
             font-size: 1.5rem;
             font-weight: 300;
             color: #3ACBAE;

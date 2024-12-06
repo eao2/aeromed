@@ -58,10 +58,10 @@ export default function Footer(){
                         <div className={styles.right_section}>
                             <div className={styles.btns}>
                                 <button className={styles.btn1}>
-                                Try Free
+                                Үнэгүй турших
                                 </button>
                                 <button className={styles.btn2}>
-                                Watch Demo
+                                Заавар үзэх
                                 </button>
                             </div>
                         </div>

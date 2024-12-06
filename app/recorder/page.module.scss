@@ -56,6 +56,21 @@
         align-items: center;
         gap: 8px;
     }
+    .uploadButton{
+        cursor: pointer;
+        background-color: #3ACBAE;
+        color: #fff;
+        padding: 14px 20px;
+        border-radius: 2rem;
+        font-size: 1rem;
+        transition: 300ms;
+        width: auto;
+        height: 3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+    }
     .rerecordButton{
         cursor: pointer;
         background-color: transparent;
