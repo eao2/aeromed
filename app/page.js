@@ -9,6 +9,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { Pagination } from 'swiper/modules';
 import Footer from "@/componenets/Footer";
+import Link from "next/link";
 
 export default function Home() {
   const [selectedOption, setSelectedOption] = useState("B2C");
@@ -82,12 +83,12 @@ export default function Home() {
                 DETECTION
               </h1>
               <div className={styles.btns}>
-                <button className={styles.btn1}>
-                  Үнгүй турших
-                </button>
-                <button className={styles.btn2}>
-                  Заавар үзэх
-                </button>
+                <Link href={"/recorder"} className={styles.btn1}>
+                Үнэгүй турших
+                </Link>
+                <Link href={"/"} className={styles.btn2}>
+                Заавар үзэх
+                </Link>
               </div>
               <p className={styles.description}>
                 Ханиалгын дуугаар хатгалгаа өвчнийг эрт илрүүлж, хэрэглэгчдийн эрүүл мэндийг хамгаалахад дэмжлэг болох.
@@ -125,10 +126,10 @@ export default function Home() {
                 </div>
                 <div className={styles.description}>
                   <div className={styles.title}>
-                    Хатгалгаа туссан эсэхээ хэрхэн мэдэх вэ
+                    Хүүхдийн уушгины хатгалгаа халдвараар эмчлэгдээд гарах үеийн зөвлөмж?
                   </div>
                   <p className={styles.date}>
-                    2024.03.12 • <span>6 минут</span>
+                    2024.12.4 • <span>6 минут</span>
                   </p>
                 </div>
               </div>
@@ -149,10 +150,10 @@ export default function Home() {
                 </div>
                 <div className={styles.description}>
                   <div className={styles.title}>
-                    Хатгалгаа туссан эсэхээ хэрхэн мэдэх вэ
+                    Хатгалгаа туссан эсэхээ хэрхэн мэдэх вэ?
                   </div>
                   <p className={styles.date}>
-                    2024.03.12 • <span>6 минут</span>
+                   2024.12.3 • <span>5 минут</span>
                   </p>
                 </div>
               </div>
@@ -173,10 +174,10 @@ export default function Home() {
                 </div>
                 <div className={styles.description}>
                   <div className={styles.title}>
-                    Хатгалгаа туссан эсэхээ хэрхэн мэдэх вэ
+                  Уушгины хатгалгаа өвчний шинж тэмдгүүд, хэрхэн эмчлэх вэ?
                   </div>
                   <p className={styles.date}>
-                    2024.03.12 • <span>6 минут</span>
+                    2024.12.2 • <span>7 минут</span>
                   </p>
                 </div>
               </div>
@@ -388,7 +389,7 @@ export default function Home() {
               />
             <div className={styles.download}>
               <h2 className={styles.subtitle}>
-                Unavailable On:
+                Тун удахгүй:
               </h2>
               <div className={styles.btns}>
                 <button className={styles.dbtn}>
@@ -422,11 +423,28 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section className={styles.contact_section}>
+        {/* <section className={styles.contact_section}>
           <div className={styles.box}>
-            
+            <div className={styles.contact}>
+              <form action={"https://formsubmit.co/se22d50@nmit.edu.mn"} method="post">
+                <input type="hidden" hidden name="_next" value="https://aeromed.vercel.app"/>
+                <input type="hidden" hidden name="_captcha" value="false"/>
+                <input type="hidden" hidden name="_template" value="table"/>
+                <h2>
+                  Contact
+                </h2>
+              </form>
+            </div>
+            <Image
+              src={"/images/3d-logo.jpg"}
+              width={1920/2}
+              height={1080/2}
+              alt=""
+              className={styles.img}
+            />
+            <div></div>
           </div>
-        </section>
+        </section> */}
         <Footer/>
       </div>
     </main>

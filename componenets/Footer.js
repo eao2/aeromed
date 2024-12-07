@@ -47,22 +47,22 @@ export default function Footer(){
                             <div className={styles.contact}>
                                 <p>
                                     Email:<br/>
-                                    hello@aeromed.mn
+                                    se21d58@nmit.edu.mn
                                 </p>
                                 <p>
                                     Phone Number:<br/>
-                                    +976 99110099
+                                    +976 94940994
                                 </p>
                             </div>
                         </div>
                         <div className={styles.right_section}>
                             <div className={styles.btns}>
-                                <button className={styles.btn1}>
+                                <Link href={"/recorder"} className={styles.btn1}>
                                 Үнэгүй турших
-                                </button>
-                                <button className={styles.btn2}>
+                                </Link>
+                                <Link href={"/"} className={styles.btn2}>
                                 Заавар үзэх
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </div>

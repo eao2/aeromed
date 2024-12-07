@@ -16,21 +16,21 @@ export default function Navbar() {
 
     const toggleMenu = () => {
         setShowMenu((prev) => !prev);
-        if (!showMenu) {
-            setShowProfile(false);
-        }
+        // if (!showMenu) {
+        //     setShowProfile(false);
+        // }
     }
     
-    const toggleProfile = () => {
-        setShowProfile((prev) => !prev);
-        if (!showProfile) {
-            setShowMenu(false);
-        }
-    }
+    // const toggleProfile = () => {
+    //     setShowProfile((prev) => !prev);
+    //     if (!showProfile) {
+    //         setShowMenu(false);
+    //     }
+    // }
 
     useEffect(() => {
         setShowMenu(false);
-        setShowProfile(false);
+        // setShowProfile(false);
         console.log(pathname)
     }, [pathname]);
 
@@ -80,16 +80,17 @@ export default function Navbar() {
                                 </div>
                             </div>
                             <div className={styles.rt}>
-                                <button className={styles.button}>
+                                {/* <button className={styles.button}>
                                     Нэвтрэх
-                                </button>
-                                <button className={styles.menu_button}>
+                                </button> */}
+                                <button className={styles.menu_button} onClick={toggleMenu}>
                                     <svg width="27" height="32" viewBox="0 0 27 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M0 6C0 4.89375 0.86183 4 1.92857 4H25.0714C26.1382 4 27 4.89375 27 6C27 7.10625 26.1382 8 25.0714 8H1.92857C0.86183 8 0 7.10625 0 6ZM0 16C0 14.8937 0.86183 14 1.92857 14H25.0714C26.1382 14 27 14.8937 27 16C27 17.1063 26.1382 18 25.0714 18H1.92857C0.86183 18 0 17.1063 0 16ZM27 26C27 27.1063 26.1382 28 25.0714 28H1.92857C0.86183 28 0 27.1063 0 26C0 24.8937 0.86183 24 1.92857 24H25.0714C26.1382 24 27 24.8937 27 26Z" fill="#3F3F3F"/>
                                     </svg>
                                 </button>
                             </div>
                         </section>
+                        {showMenu && <Modal/>}
                     </div>
                 </div>
             </header>
@@ -98,20 +99,35 @@ export default function Navbar() {
 }
 
 function Modal() {
+    const pathname = usePathname();
     return (
         <section className={styles.modal}>
             <ul>
                 <li>
-                    <Link href={'/addclub'} className={styles.link}>
-                        <h3>
-                            Club үүсгэх
+                    <Link href='/' className={styles.link}>
+                        <h3 style={{color: pathname == '/' ? "#3ACBAE" : "#2C2C2C"}}>
+                        Танилцуулга
                         </h3>
                     </Link>
                 </li>
                 <li>
-                    <Link href={'/events'} className={styles.link}>
-                        <h3>
-                            Events
+                    <Link href={'/recorder'} className={styles.link}>
+                        <h3 style={{color: pathname == '/recorder' ? "#3ACBAE" : "#2C2C2C"}}>
+                        Оношлуулах
+                        </h3>
+                    </Link>
+                </li>
+                <li>
+                    <Link href={'/#pricing'} className={styles.link}>
+                        <h3 style={{color: pathname == '/#pricing' ? "#3ACBAE" : "#2C2C2C"}}>
+                        Төлбөр
+                        </h3>
+                    </Link>
+                </li>
+                <li>
+                    <Link href={'/#contact'} className={styles.link}>
+                        <h3 style={{color: pathname == '/#contact' ? "#3ACBAE" : "#2C2C2C"}}>
+                        Холбогдох
                         </h3>
                     </Link>
                 </li>

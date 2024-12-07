@@ -3,6 +3,7 @@
 import { continuousVisualizer } from "sound-visualizer";
 import { useState, useRef, useEffect } from "react";
 import styles from './page.module.scss';  
+import Footer from "@/componenets/Footer";
 
 export default function AudioRecorder() {
   const [isRecording, setIsRecording] = useState(false);
@@ -372,6 +373,25 @@ export default function AudioRecorder() {
         </div>
       </section>
       )}
+      <section className={styles.textcontainer}>
+        <p className={styles.warning}>
+          <span>1</span>
+          Бичиж эхлэх товчийг дарна.
+        </p>
+        <p className={styles.warning}>
+          <span>2</span>
+          Эхлэсний дараа 4 удаа ханиана.
+        </p>
+        <p className={styles.warning}>
+          <span>3</span>
+          Дууссаны дараа илгээх товчийг дарна.
+        </p>
+        <p className={styles.warning}>
+          <span>4</span>
+          Хариу 10-15 секундийн дотор гарна.
+        </p>
+      </section>
+    <Footer/>
     </section>
   );
 }

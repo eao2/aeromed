@@ -32,14 +32,43 @@
             font-weight: 600;
         }
     }
-  }
-  
-  .canvas {
-    margin: 1rem 0;
-  }
-  
+}
+
+.textcontainer{
+    max-width: 60rem;
+    margin: auto;
+    padding-top: 1rem;
+    .warning{
+        color: #3f3f3f;
+        display: flex;
+        align-items: center;
+        margin-top: 1rem;
+        span{
+            width: 26px;
+            height: 26px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 1rem;
+            border-radius: 1rem;
+            background-color: #3ACBAE;
+            color: #FFF;
+        }
+    }
+    @media (max-width: 1008px) {
+      margin-left: 1.5rem;
+      margin-right: 1.5rem;
+    }
+}
+
+.canvas {
+margin: 1rem 0;
+}
+
   .btns{
     display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
     gap: 1rem;
     .recordButton{
         cursor: pointer;
