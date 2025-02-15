@@ -204,7 +204,7 @@ export default function AudioRecorder() {
     const formData = new FormData();
     formData.append('fileToUpload', selectedFile);
 
-    return fetch('http://student.nmit.edu.mn:8080/upload', {
+    return fetch('https://student.nmit.edu.mn/upload', {
       method: 'POST',
       body: formData,
     })
@@ -242,7 +242,7 @@ export default function AudioRecorder() {
         const formData = new FormData();
         const file = new File([wavBlob], "recording.wav", { type: "audio/wav" });
         formData.append("fileToUpload", file);
-        return fetch('http://student.nmit.edu.mn:8080/upload', {
+        return fetch('https://student.nmit.edu.mn/upload', {
           method: 'POST',
           body: formData
         });
